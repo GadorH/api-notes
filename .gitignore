@@ -1,0 +1,11 @@
+.vscode/
+
+node_modules/
+
+public/
+
+.DS_Store
+
+prisma/*.db
+prisma/*.db-journal
+.env
