@@ -6,6 +6,7 @@
     "scripts": {
         "start": "npm run prisma:migrate && nodemon ./src/index.js",
         "docs:start": "redocly preview-docs ./docs/openapi.yaml",
+        "docs:build": "redocly build-docs ./docs/openapi.yaml --output=docs/index.html",
         "prisma:studio": "prisma studio",
         "prisma:migrate": "prisma migrate dev",
         "prettier:format": "prettier --write \"./src/**/*.js\""
