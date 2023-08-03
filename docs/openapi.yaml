@@ -1,0 +1,507 @@
+openapi: "3.0.0"
+info:
+    title: Notes API
+    version: 1.0.0
+servers:
+    - url: http://localhost:3000
+      description: Development server
+paths:
+    # auth endpoints
+    /auth/login:
+        post:
+            summary: Login user
+            operationId: loginUser
+            requestBody:
+                description: User object
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/User"
+            responses:
+                200:
+                    description: Login success
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    accessToken:
+                                        type: string
+                400:
+                    description: Invalid parameters
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                401:
+                    description: Unauthorized user
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+    /auth/register:
+        post:
+            summary: Register user
+            operationId: registerUser
+            requestBody:
+                description: User object
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/User"
+            responses:
+                201:
+                    description: User created
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    accessToken:
+                                        type: string
+                409:
+                    description: User already exists
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+
+                400:
+                    description: Invalid parameters
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+    # categories endpoints
+    /categories:
+        post:
+            security:
+                - BearerAuth: []
+            summary: Create new category
+            operationId: createCategory
+            requestBody:
+                description: Category object
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                name:
+                                    type: string
+            responses:
+                201:
+                    description: category created
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Category"
+                400:
+                    description: Invalid parameters
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                401:
+                    description: Unauthorized user
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                409:
+                    description: Category already exists
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+    /categories/{categoryId}:
+        parameters:
+            - name: categoryId
+              in: path
+              required: true
+              schema:
+                  type: string
+              description: Category id
+        put:
+            security:
+                - BearerAuth: []
+            summary: Edit category
+            operationId: editCategory
+            requestBody:
+                description: Category object
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                name:
+                                    type: string
+
+            responses:
+                200:
+                    description: Category edited
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Category"
+                400:
+                    description: Invalid parameters
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                401:
+                    description: Unauthorized user
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                404:
+                    description: Category not found
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                409:
+                    description: Category already exists
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+        delete:
+            security:
+                - BearerAuth: []
+            summary: Delete category
+            operationId: deleteCategory
+            responses:
+                200:
+                    description: Category deleted
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                400:
+                    description: Invalid parameters
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                401:
+                    description: Unauthorized user
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+    # notes endpoints
+    /notes:
+        get:
+            security:
+                - BearerAuth: []
+            summary: Get notes
+            operationId: getNotes
+            parameters:
+                - name: fields
+                  in: query
+                  schema:
+                      type: array
+                      items:
+                          type: string
+                  style: form
+                  explode: true
+            responses:
+                200:
+                    description: success
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: "#/components/schemas/Note"
+                401:
+                    description: Unauthorized user
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+        post:
+            security:
+                - BearerAuth: []
+            summary: Create notes
+            operationId: createNote
+            requestBody:
+                description: Note object
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                title:
+                                    type: string
+                                content:
+                                    type: string
+                                image:
+                                    type: string
+                                category:
+                                    type: string
+            responses:
+                201:
+                    description: Note created
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Note"
+
+                400:
+                    description: Invalid parameters
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+
+                401:
+                    description: Unauthorized user
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+    /notes/{noteId}:
+        get:
+            security:
+                - BearerAuth: []
+            summary: Get note
+            operationId: getNote
+            parameters:
+                - name: noteId
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                  description: Note id
+            responses:
+                200:
+                    description: success
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Note"
+
+                401:
+                    description: Unauthorized user
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+
+                404:
+                    description: Note not found
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+        put:
+            security:
+                - BearerAuth: []
+            summary: Edit note
+            operationId: editNote
+            parameters:
+                - name: noteId
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                  description: Note id
+            requestBody:
+                description: Note object
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                title:
+                                    type: string
+                                content:
+                                    type: string
+                                image:
+                                    type: string
+                                category:
+                                    type: string
+                                public:
+                                    type: boolean
+            responses:
+                200:
+                    description: Note edited
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Note"
+                400:
+                    description: Invalid parameters
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                401:
+                    description: Unauthorized user
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                404:
+                    description: Note not found
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+        delete:
+            security:
+                - BearerAuth: []
+            summary: Delete note
+            operationId: deleteNote
+            parameters:
+                - name: noteId
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                  description: Note id
+            responses:
+                200:
+                    description: Note deleted
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                400:
+                    description: Invalid parameters
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                401:
+                    description: Unauthorized user
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+    /notes/share/{noteId}:
+        get:
+            summary: Get public Note
+            operationId: getPublicNote
+            parameters:
+                - name: noteId
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                  description: Note id
+            responses:
+                200:
+                    description: success
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Note"
+                404:
+                    description: Note not found
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+    /notes/{noteId}/upload-image:
+        post:
+            security:
+                - BearerAuth: []
+            summary: Upload image for a note
+            operationId: uploadNoteImage
+            parameters:
+                - name: noteId
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                  description: Note id
+            requestBody:
+                content:
+                    multipart/form-data:
+                        schema:
+                            type: object
+                            properties:
+                                image:
+                                    type: string
+                                    format: binary
+            responses:
+                200:
+                    description: Image uploaded successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                400:
+                    description: Invalid parameters
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                401:
+                    description: Unauthorized user
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                404:
+                    description: Note not found
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+
+components:
+    securitySchemes:
+        BearerAuth:
+            type: http
+            scheme: Bearer
+            bearerFormat: JWT
+    schemas:
+        User:
+            type: object
+            properties:
+                email:
+                    type: string
+                    required: true
+                password:
+                    type: string
+                    required: true
+        Category:
+            type: object
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+
+        Note:
+            type: object
+            properties:
+                id:
+                    type: string
+                title:
+                    type: string
+                content:
+                    type: string
+                image:
+                    type: string
+                public:
+                    type: boolean
+                category:
+                    type: string
+                createdAt:
+                    type: string
+                updatedAt:
+                    type: string
+                user:
+                    type: string
