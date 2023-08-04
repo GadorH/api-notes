@@ -1,15 +1,15 @@
-# Api Notes - 
+# API Notes 
 
 ## 📜 Sumario
 
 La API de Gestión de Notas es una poderosa herramienta que permite a los usuarios, tanto anónimos como registrados, gestionar de manera eficiente sus notas personales. A continuación, se presentan las funcionalidades principales de la API:
 
-###Anónimo:
+### Anónimo:
 
 **Login:** Los usuarios anónimos pueden autenticarse en la plataforma utilizando su dirección de correo electrónico y contraseña.
 **Registro:** Los usuarios tienen la opción de registrarse en la aplicación proporcionando su dirección de correo electrónico y contraseña.
 
-###Usuarios Registrados:
+### Usuarios Registrados:
 
 **Ver su listado de notas:** Los usuarios registrados pueden acceder a un listado que muestra únicamente los títulos de sus notas, facilitando una vista rápida y organizada.
 **Visualizar una nota:** Los usuarios pueden ver el contenido completo de una nota específica, incluyendo su título, texto y categoría.
@@ -30,7 +30,7 @@ La documentación de este proyecto la puedes encontrar en el siguiente enlace de
 
 Este proyecto de api de notas ha sido desarrollado utilizando las siguientes librerias:
 
-###Prisma:
+### Prisma:
 Para llevar a cabo la gestión de las bases de datos de manera eficiente y estructurada. Prisma ha demostrado ser una elección excelente debido a las siguientes ventajas:
 
 1.**Type-Safe Queries:** Prisma utiliza un sistema de tipos para las consultas, lo que significa que los errores de sintaxis en las consultas se detectan en tiempo de compilación en lugar de tiempo de ejecución. Esto aumenta la confiabilidad del código y evita errores costosos.
@@ -49,7 +49,7 @@ Para llevar a cabo la gestión de las bases de datos de manera eficiente y estru
 
 
 
-###Multer:
+### Multer:
 Para gestionar la subida de archivos a la base de datos de manera efectiva y segura. Multer ha demostrado ser una opción sólida debido a las siguientes ventajas:
 
 1.**Manejo de Cargas de Archivos:** Multer simplifica enormemente el proceso de carga de archivos al servidor. Permite a los usuarios cargar imágenes únicas y asociarlas con sus notas de manera sencilla y rápida.
@@ -62,17 +62,17 @@ Para gestionar la subida de archivos a la base de datos de manera efectiva y seg
 
 
 
-###Joi:
+### Joi:
 Para validar la información recibida en las solicitudes de body y params. Con Joi, podemos definir reglas precisas y personalizadas para validar los datos, lo que garantiza que solo se acepten datos válidos y seguros. Sus mensajes de error claros facilitan la identificación y solución de problemas, mientras que su facilidad de uso y capacidad para validar tipos de datos complejos agilizan el proceso de implementación. Joi nos ha permitido construir una API más confiable, protegida contra vulnerabilidades y con una experiencia de usuario mejorada.
 
 
-###Jwt:
+### Jwt:
 Para gestionar la autenticación y autorización de los usuarios. Cuando un usuario inicia sesión correctamente, se genera un token JWT.Este token es firmado digitalmente con una clave secreta del servidor, lo que garantiza su autenticidad y evita alteraciones no autorizadas. Durante las solicitudes posteriores, el token se envía en la cabecera de la petición y es validado por el servidor. De esta manera, JWT nos ha permitido asegurar la protección de las rutas y recursos sensibles, asegurándonos de que solo los usuarios autorizados puedan acceder a ellos, lo que mejora significativamente la seguridad y la confianza en nuestra API.
 
-###Bycript:
+### Bycript:
 Para gestionar de forma segura el almacenamiento y la comparación de contraseñas de los usuarios. Cuando un usuario se registra o actualiza su contraseña, utilizamos Bcrypt para hashear la contraseña antes de almacenarla en la base de datos. Esto garantiza que las contraseñas no se almacenen en texto plano, aumentando significativamente la seguridad y evitando el acceso no autorizado a las credenciales de los usuarios. Además, al utilizar Bcrypt para comparar contraseñas durante el proceso de autenticación, podemos verificar la autenticidad de las credenciales proporcionadas por el usuario sin exponer las contraseñas reales en el proceso. Gracias a Bcrypt, hemos fortalecido la protección de la información sensible de nuestros usuarios y mejorado la integridad y seguridad general de nuestra API.
 
-###Open api:
+### Open api:
 para generar y mantener una documentación completa y estructurada de todos los endpoints y funcionalidades disponibles. Utilizamos la especificación OpenAPI para describir cada ruta, los parámetros de entrada requeridos, las respuestas esperadas y los posibles errores. Gracias a esta documentación, los desarrolladores y usuarios pueden acceder de manera sencilla a una referencia detallada de la API, lo que facilita la comprensión de su funcionamiento y uso. Además, esta documentación se mantiene actualizada automáticamente a medida que realizamos cambios en la API, lo que garantiza que siempre esté sincronizada con la versión en producción. OpenAPI nos ha permitido mejorar la colaboración, fomentar las buenas prácticas de desarrollo y brindar una experiencia más transparente y amigable para aquellos que interactúan con nuestra API.
 
 
