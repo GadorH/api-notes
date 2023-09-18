@@ -18,10 +18,9 @@ const createNote = async (req, res, next) => {
 };
 
 const createNoteBodySchema = Joi.object({
-    title: Joi.string().min(1).max(50).trim().required(),
-    content: Joi.string().min(1).max(2000).trim().required(),
-    image: Joi.string().uri().required(),
-    category: Joi.string().min(1).trim().required(),
+    title: [Joi.string().min(1).max(50).trim().optional(), Joi.allow(null)],
+    content: Joi.string().min(1).trim().required(),
+    categoryId: Joi.string().min(1).trim(),
 });
 
 module.exports = createNote;

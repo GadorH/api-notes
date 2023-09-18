@@ -3,18 +3,21 @@ const { db } = require("../../shared/utils/db");
 const ApplicationErrors = require("../../shared/utils/applicationErrors");
 const { ERROR_TYPES } = require("../shared/constants");
 
+const getDefaultNoteTitle = () => {
+    return `New Note ${new Date().toISOString().slice(0, 10)}`;
+};
 const create = async (userId, payload) => {
     try {
-        const { title, content, image, category } = payload;
+        const { title, content, image, categoryId } = payload;
 
         const note = await db.note.create({
             data: {
-                title: title,
+                title: title ?? getDefaultNoteTitle(),
                 content: content,
                 image: image,
                 category: {
                     connect: {
-                        id: category,
+                        id: categoryId,
                     },
                 },
                 user: {
@@ -111,28 +114,6 @@ const remove = async (noteId, userId) => {
     }
 };
 
-const uploadNoteImage = async (noteId, userId, image) => {
-    try {
-        const note = await db.note.update({
-            where: {
-                id: noteId,
-                userId: userId,
-            },
-            data: {
-                image: image,
-            },
-        });
-
-        return note;
-    } catch (error) {
-        if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2025") {
-            throw ApplicationErrors.create(ERROR_TYPES.NoteNotFound);
-        }
-
-        throw error;
-    }
-};
-
 module.exports = {
     create,
     getAllNotes,
@@ -140,5 +121,4 @@ module.exports = {
     edit,
     getPublicNote,
     remove,
-    uploadNoteImage,
 };

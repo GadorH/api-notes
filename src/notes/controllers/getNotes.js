@@ -9,16 +9,24 @@ const getNotes = async (req, res, next) => {
 
         if (fields) {
             notes = notes.map((note) => {
+                const { userId: user, ...rest } = note;
                 return fields.reduce((obj, field) => {
                     return {
                         ...obj,
-                        [field]: note[field],
+                        [field]: rest[field],
                     };
                 }, {});
             });
         }
 
-        return res.status(200).json(notes);
+        return res.status(200).json(
+            notes.map((note) => {
+                const { userId: user, ...rest } = note;
+                return {
+                    ...rest,
+                };
+            }),
+        );
     } catch (error) {
         next(error);
     }

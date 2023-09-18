@@ -1,13 +1,20 @@
+const fs = require("fs");
 const path = require("path");
 const multer = require("multer");
 const { v4: uuidv4 } = require("uuid");
 
 const storage = multer.diskStorage({
-    destination: "public/uploads/",
+    destination: (req, file, cb) => {
+        const dest = `static/private/${req.userId}`;
+
+        if (!fs.existsSync(dest)) {
+            fs.mkdirSync(dest, { recursive: true });
+        }
+
+        cb(null, dest);
+    },
     filename: (req, file, cb) => {
-        const uniqueSuffix = uuidv4();
-        const extension = path.extname(file.originalname);
-        cb(null, `img-${uniqueSuffix}${extension}`);
+        cb(null, file.originalname);
     },
 });
 
@@ -24,8 +31,8 @@ const uploadImage = (req, res) => {
     });
 };
 
-const generatePublicPath = (file) => {
-    return file.path.replace("public", "");
+const generatePublicPath = (userId, file) => {
+    return file.path.replace("static", "");
 };
 
 module.exports = {

@@ -18,7 +18,8 @@ model User {
     email    String @unique
     password String
 
-    notes Note[]
+    notes      Note[]
+    categories Category[]
 }
 
 model Category {
@@ -28,7 +29,9 @@ model Category {
 
     name String @unique
 
-    notes Note[]
+    notes  Note[]
+    user   User   @relation(fields: [userId], references: [id])
+    userId String
 }
 
 model Note {
@@ -36,12 +39,11 @@ model Note {
     createAt  DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    title   String
+    title   String?
     content String
-    image   String?
     public  Boolean @default(false)
 
-    category   Category @relation(fields: [categoryId], references: [id])
+    category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
     categoryId String
     user       User     @relation(fields: [userId], references: [id])
     userId     String

@@ -76,6 +76,26 @@ paths:
                                 type: object
     # categories endpoints
     /categories:
+        get:
+            security:
+                - BearerAuth: []
+            summary: Get categories
+            operationId: getCategories
+            responses:
+                200:
+                    description: success
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: "#/components/schemas/Category"
+                401:
+                    description: Unauthorized user
+                    content:
+                        application/json:
+                            schema:
+                                type: object
         post:
             security:
                 - BearerAuth: []
@@ -238,12 +258,13 @@ paths:
                     application/json:
                         schema:
                             type: object
+                            required:
+                                - content
+                                - category
                             properties:
                                 title:
                                     type: string
                                 content:
-                                    type: string
-                                image:
                                     type: string
                                 category:
                                     type: string
@@ -325,8 +346,6 @@ paths:
                                 title:
                                     type: string
                                 content:
-                                    type: string
-                                image:
                                     type: string
                                 category:
                                     type: string
@@ -412,19 +431,12 @@ paths:
                         application/json:
                             schema:
                                 type: object
-    /notes/{noteId}/upload-image:
+    /notes/upload-image:
         post:
             security:
                 - BearerAuth: []
             summary: Upload image for a note
             operationId: uploadNoteImage
-            parameters:
-                - name: noteId
-                  in: path
-                  required: true
-                  schema:
-                      type: string
-                  description: Note id
             requestBody:
                 content:
                     multipart/form-data:
@@ -441,20 +453,11 @@ paths:
                         application/json:
                             schema:
                                 type: object
-                400:
-                    description: Invalid parameters
-                    content:
-                        application/json:
-                            schema:
-                                type: object
+                                properties:
+                                    location:
+                                        type: string
                 401:
                     description: Unauthorized user
-                    content:
-                        application/json:
-                            schema:
-                                type: object
-                404:
-                    description: Note not found
                     content:
                         application/json:
                             schema:
@@ -493,15 +496,11 @@ components:
                     type: string
                 content:
                     type: string
-                image:
-                    type: string
                 public:
                     type: boolean
-                category:
+                categoryId:
                     type: string
                 createdAt:
                     type: string
                 updatedAt:
-                    type: string
-                user:
                     type: string

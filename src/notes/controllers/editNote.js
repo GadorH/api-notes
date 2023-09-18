@@ -11,12 +11,12 @@ const editNote = async (req, res, next) => {
 
         const { userId, params } = req;
         const { noteId } = params;
-        const { title, content, image, category, public } = req.body;
+        const { title, content, image, categoryId, public } = req.body;
         const payload = {
             title,
             content,
             image,
-            categoryId: category,
+            categoryId,
             public: public,
         };
         const note = await NotesService.edit(noteId, userId, payload);
@@ -35,7 +35,7 @@ const editNoteSchema = Joi.object({
     title: Joi.string().min(1).max(50).trim(),
     content: Joi.string().min(1).max(2000).trim(),
     image: Joi.string().uri(),
-    category: Joi.string().min(1).trim(),
+    categoryId: Joi.string().min(1).trim(),
     public: Joi.boolean().strict(),
 });
 

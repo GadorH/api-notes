@@ -9,8 +9,9 @@ const createCategory = async (req, res, next) => {
             return res.status(400).json(validationErrors);
         }
 
+        const { userId } = req;
         const { name } = req.body;
-        const category = await CategoriesService.create({ name });
+        const category = await CategoriesService.create(userId, { name });
 
         return res.status(201).json(category);
     } catch (error) {

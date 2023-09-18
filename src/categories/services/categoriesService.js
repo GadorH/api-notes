@@ -3,11 +3,30 @@ const { db } = require("../../shared/utils/db");
 const ApplicationErrors = require("../../shared/utils/applicationErrors");
 const { ERROR_TYPES } = require("../shared/constants");
 
-const create = async ({ name }) => {
+const getAll = async (userId) => {
+    try {
+        const categories = await db.category.findMany({
+            where: {
+                userId: userId,
+            },
+        });
+
+        return categories;
+    } catch (error) {
+        throw error;
+    }
+};
+
+const create = async (userId, { name }) => {
     try {
         const category = await db.category.create({
             data: {
                 name: name,
+                user: {
+                    connect: {
+                        id: userId,
+                    },
+                },
             },
         });
 
@@ -58,6 +77,7 @@ const remove = async ({ categoryId }) => {
 };
 
 module.exports = {
+    getAll,
     create,
     edit,
     remove,

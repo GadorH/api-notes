@@ -4,18 +4,13 @@ const { uploadImage, generatePublicPath } = require("../../shared/utils/storage"
 const uploadNoteImage = async (req, res) => {
     try {
         const { userId } = req;
-        const { noteId } = req.params;
-
-        if (!(await NotesService.getNote(noteId, userId))) {
-            return res.status(404).json({ message: "Note not found" });
-        }
 
         await uploadImage(req, res);
-        const staticURLPath = generatePublicPath(req.file);
-        const note = await NotesService.uploadNoteImage(noteId, userId, staticURLPath);
+        const imageUrl = `${req.protocol}://${req.get("host")}/static/${userId}/${req.file.filename}`;
 
-        return res.status(200).json(note);
+        return res.status(200).json({ location: imageUrl });
     } catch (error) {
+        console.log(error);
         return res.status(400).json({ message: "Invalid parameters" });
     }
 };
