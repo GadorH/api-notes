@@ -8,7 +8,7 @@ const hashString = async (string) => {
 };
 
 const login = async (user) => {
-    const accessToken = jwt.sign({ userId: user.id }, process.env.JWT_ACCESS_SECRET, {
+    const accessToken = await jwt.sign({ userId: user.id }, process.env.JWT_ACCESS_SECRET, {
         expiresIn: "1d",
     });
 
@@ -21,11 +21,13 @@ const verifyToken = async (token) => {
 };
 
 const isValidPassword = async (password, user) => {
-    try {
-        return await bcrypt.compare(password, user.password);
-    } catch (error) {
+    const isValid = await bcrypt.compare(password, user.password);
+
+    if (!isValid) {
         throw ApplicationErrors.create(ERROR_TYPES.NotValidPassword);
     }
+
+    return true;
 };
 
 module.exports = {

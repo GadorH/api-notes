@@ -4,7 +4,6 @@ const cors = require("cors");
 const authRouter = require("./auth/router");
 const notesRouter = require("./notes/router");
 const categoriesRouter = require("./categories/router");
-const isAuthenticatedMiddleware = require("./auth/middlewares/isAuthenticated");
 
 const PORT = process.env.SERVER_PORT || 3000;
 const app = express();
@@ -19,8 +18,6 @@ app.use("/static/:userId/:imageName", (req, res) => {
     const userId = req.params.userId;
     const imageName = req.params.imageName;
     const imagePath = path.join(__dirname, "..", "static", "private", userId, imageName);
-
-    console.log(imagePath);
 
     res.sendFile(imagePath);
 });
