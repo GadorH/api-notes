@@ -33,7 +33,7 @@ const loginUsers = async (req, res, next) => {
 
 const loginUsersSchema = Joi.object({
     email: Joi.string().email().required(),
-    password: Joi.string().min(4).max(6).required(),
+    password: Joi.string().min(6).max(20).required(),
 });
 
 module.exports = loginUsers;
