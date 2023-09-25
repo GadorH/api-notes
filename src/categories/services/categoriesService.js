@@ -19,6 +19,19 @@ const getAll = async (userId) => {
 
 const create = async (userId, { name }) => {
     try {
+        const categoryExists = await db.category
+            .findFirst({
+                where: {
+                    userId: userId,
+                    name: name,
+                },
+            })
+            .then(Boolean);
+
+        if (categoryExists) {
+            throw ApplicationErrors.create(ERROR_TYPES.CategoryAlreadyExists);
+        }
+
         const category = await db.category.create({
             data: {
                 name: name,
@@ -32,10 +45,6 @@ const create = async (userId, { name }) => {
 
         return category;
     } catch (error) {
-        if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002") {
-            throw ApplicationErrors.create(ERROR_TYPES.CategoryAlreadyExists);
-        }
-
         throw error;
     }
 };

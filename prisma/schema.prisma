@@ -27,7 +27,7 @@ model Category {
     createAt  DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    name String @unique
+    name String
 
     notes  Note[]
     user   User   @relation(fields: [userId], references: [id])
