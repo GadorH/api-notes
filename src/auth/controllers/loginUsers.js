@@ -6,12 +6,17 @@ const { ERROR_TYPES } = require("../shared/constants");
 const loginUsers = async (req, res, next) => {
     try {
         const { error: validationErrors } = loginUsersSchema.validate(req.body);
+
         if (validationErrors) {
             return res.status(400).json(validationErrors);
         }
 
         const { email, password } = req.body;
         const user = await UsersService.findByEmail(email);
+
+        if (!user) {
+            return res.status(400).json({ message: "User not found" });
+        }
 
         await AuthService.isValidPassword(password, user);
 
